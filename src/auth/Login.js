@@ -1,21 +1,32 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 const Login = (props) => {
-  const [userName, setUserName] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const onUserNameChange = (event) => {
-    setUserName(event.target.value);
+  const onEmailChange = (event) => {
+    setEmail(event.target.value);
   };
   const onPasswordChange = (event) => {
     setPassword(event.target.value);
   };
   const onLogin = (event) => {
     event.preventDefault();
-    if (userName === "admin" && password === "admin") {
-      alert("Success");
-    } else {
-      alert("Failure");
-    }
+    fetch(
+      "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyDByavGaIfEbfo-Vx76OjYDWH4s7T1hUYU",
+      {
+        method: "POST",
+        body: JSON.stringify({
+          email: email,
+          password: password,
+          returnSecureToken: true,
+        }),
+      }
+    )
+      .then((data) => data.json())
+      .then((result) => {
+        console.log(result);
+      });
   };
   return (
     <div className="row justify-content-center">
@@ -27,10 +38,10 @@ const Login = (props) => {
               <div className="form-group mb-2">
                 <label className="form-label">Username</label>
                 <input
-                  type="text"
-                  name="userName"
-                  value={userName}
-                  onChange={onUserNameChange}
+                  type="email"
+                  name="email"
+                  value={email}
+                  onChange={onEmailChange}
                   className="form-control"
                 />
               </div>
@@ -51,13 +62,9 @@ const Login = (props) => {
               </div>
               <div className="d-flex justify-content-center align-items-center mt-2 text-muted">
                 New to Library? Please
-                <button
-                  className="btn btn-link"
-                  type="button"
-                  onClick={() => props.setAuthView("register")}
-                >
+                <Link className="btn btn-link" to="/register">
                   Register
-                </button>
+                </Link>
               </div>
             </form>
           </div>
