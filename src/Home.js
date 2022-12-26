@@ -1,20 +1,27 @@
 import React, { useEffect, useState } from "react";
+import useLocalStorage from "./useLocalStorage";
 
 export default function Home() {
   const [books, setBooks] = useState([]);
+  const [auth, setAuth] = useLocalStorage("auth", null);
   useEffect(() => {
-    fetch("https://fir-d2d26-default-rtdb.firebaseio.com/books.json")
-      .then((data) => data.json())
-      .then((result) => {
-        const arr = [];
-        result.forEach((row) => {
-          if (row) {
-            arr.push({ ...row });
-          }
+    if (auth) {
+      fetch(
+        "https://fir-d2d26-default-rtdb.firebaseio.com/books.json?auth=" +
+          auth.idToken
+      )
+        .then((data) => data.json())
+        .then((result) => {
+          const arr = [];
+          result.forEach((row) => {
+            if (row) {
+              arr.push({ ...row });
+            }
+          });
+          setBooks(arr);
         });
-        setBooks(arr);
-      });
-  });
+    }
+  }, [auth]);
   return books.map((book) => (
     <div className="card mb-2" key={book.id}>
       <div className="card-body">

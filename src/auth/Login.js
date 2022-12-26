@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Login = (props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
   const onEmailChange = (event) => {
     setEmail(event.target.value);
   };
@@ -26,6 +27,12 @@ const Login = (props) => {
       .then((data) => data.json())
       .then((result) => {
         console.log(result);
+        if (result.error) {
+          alert(result.error.message);
+        } else {
+          localStorage.setItem("auth", JSON.stringify(result));
+          navigate("/");
+        }
       });
   };
   return (
