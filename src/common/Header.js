@@ -1,7 +1,14 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import useAuth from "../useAuth";
 
-export default function Header() {
+const Header = () => {
+  const [auth, setAuth] = useAuth();
+  const navigate = useNavigate();
+  const logout = () => {
+    setAuth(undefined);
+    navigate("login");
+  };
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
       <div className="container-fluid">
@@ -20,19 +27,31 @@ export default function Header() {
             </li>
           </ul>
           <ul className="navbar-nav">
-            <li className="nav-item">
-              <Link className="nav-link" to="/login">
-                Login
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link" to="/register">
-                Registration
-              </Link>
-            </li>
+            {auth ? (
+              <li className="nav-item">
+                <button className="btn btn-link nav-link" onClick={logout}>
+                  Logout
+                </button>
+              </li>
+            ) : (
+              <>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/login">
+                    Login
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/register">
+                    Registration
+                  </Link>
+                </li>
+              </>
+            )}
           </ul>
         </div>
       </div>
     </nav>
   );
-}
+};
+
+export default Header;

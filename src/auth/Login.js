@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import useAuth from "../useAuth";
 
 const Login = (props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [auth, setAuth] = useAuth();
   const navigate = useNavigate();
   const onEmailChange = (event) => {
     setEmail(event.target.value);
@@ -30,8 +32,10 @@ const Login = (props) => {
         if (result.error) {
           alert(result.error.message);
         } else {
-          localStorage.setItem("auth", JSON.stringify(result));
-          navigate("/");
+          setAuth(result);
+          setTimeout(() => {
+            navigate("/");
+          }, 200);
         }
       });
   };

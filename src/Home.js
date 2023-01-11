@@ -22,12 +22,28 @@ export default function Home() {
         });
     }
   }, [auth]);
-  return books.map((book) => (
-    <div className="card mb-2" key={book.id}>
-      <div className="card-body">
-        {book.title}(<small>{book.language}</small>)<p>{book.author}</p>
-        <p>Price: {book.price}</p>
-      </div>
+  return (
+    <div className="row">
+      {books.map((book) => (
+        <div className="col-12 col-md-6 col-lg-4">
+          <div className="d-flex border rounded mb-2" key={book.id}>
+            <img
+              src={book.img}
+              alt={book.title}
+              style={{ width: "100px" }}
+              className="rounded-start"
+            />
+            <div className="ms-2">
+              <h3>{book.title}</h3>
+              <p>
+                Language : <small>{book.language}</small>
+              </p>
+              <p>Author : {book.author}</p>
+              <p>Price: {book.price}</p>
+            </div>
+          </div>
+        </div>
+      ))}
     </div>
-  ));
+  );
 }
