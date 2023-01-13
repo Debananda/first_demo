@@ -28,14 +28,13 @@ const Login = (props) => {
     )
       .then((data) => data.json())
       .then((result) => {
-        console.log(result);
         if (result.error) {
           alert(result.error.message);
         } else {
           setAuth(result);
           setTimeout(() => {
-            navigate("/");
-          }, 200);
+            navigate("/", { state: { user: JSON.stringify(result) } });
+          }, 1000);
         }
       });
   };

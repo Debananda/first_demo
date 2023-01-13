@@ -1,14 +1,19 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import useAuth from "../useAuth";
 
 const Header = () => {
   const [auth, setAuth] = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const logout = () => {
     setAuth(undefined);
     navigate("login");
   };
+  const stateAuth =
+    location.state && location.state["user"]
+      ? JSON.parse(location.state["user"])
+      : undefined;
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
       <div className="container-fluid">
@@ -27,7 +32,7 @@ const Header = () => {
             </li>
           </ul>
           <ul className="navbar-nav">
-            {auth ? (
+            {auth || stateAuth ? (
               <li className="nav-item">
                 <button className="btn btn-link nav-link" onClick={logout}>
                   Logout

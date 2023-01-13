@@ -25,8 +25,8 @@ export default function Home() {
   return (
     <div className="row">
       {books.map((book) => (
-        <div className="col-12 col-md-6 col-lg-4">
-          <div className="d-flex border rounded mb-2" key={book.id}>
+        <div className="col-12 col-md-6 col-lg-4" key={book.id}>
+          <div className="d-flex border rounded mb-2">
             <img
               src={book.img}
               alt={book.title}
